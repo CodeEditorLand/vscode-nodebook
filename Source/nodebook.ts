@@ -3,10 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as vscode from "vscode";
-import { NodeKernel } from "./nodeKernel";
+import * as vscode from 'vscode';
+import { NodeKernel } from './nodeKernel';
 
 export class Nodebook implements vscode.Disposable {
+
 	private nodeKernel: NodeKernel;
 	private debugging = false;
 	private disposables: vscode.Disposable[] = [];
@@ -23,7 +24,7 @@ export class Nodebook implements vscode.Disposable {
 
 	public async restartKernel() {
 		await this.stopDebugger();
-		await vscode.commands.executeCommand("notebook.clearAllCellsOutputs");
+		await vscode.commands.executeCommand('notebook.clearAllCellsOutputs');
 		await this.nodeKernel.restart();
 		if (this.debugging) {
 			await this.startDebugger();
@@ -31,6 +32,7 @@ export class Nodebook implements vscode.Disposable {
 	}
 
 	public async toggleDebugging(document: vscode.NotebookDocument) {
+
 		if (this.debugging) {
 			this.stopDebugger();
 		}
@@ -75,11 +77,8 @@ export class Nodebook implements vscode.Disposable {
 	private async startDebugger() {
 		if (!this.activeDebugSession) {
 			try {
-				await vscode.debug.startDebugging(
-					undefined,
-					this.nodeKernel.getLaunchConfig()
-				);
-			} catch (err) {
+				await vscode.debug.startDebugging(undefined, this.nodeKernel.getLaunchConfig());
+			} catch(err) {
 				console.log(`error: ${err}`);
 			}
 		}
@@ -87,8 +86,8 @@ export class Nodebook implements vscode.Disposable {
 
 	private async stopDebugger() {
 		if (this.activeDebugSession) {
-			await vscode.commands.executeCommand("workbench.action.debug.stop");
-			this.disposables.forEach((d) => d.dispose());
+			await vscode.commands.executeCommand('workbench.action.debug.stop');
+			this.disposables.forEach(d => d.dispose());
 			this.disposables = [];
 		}
 	}

@@ -1,41 +1,22 @@
 {
 	"name": "vscode-nodebook",
 	"displayName": "Nodebook",
-	"description": "Node.js Notebook for VS Code",
 	"version": "1.0.0",
-	"enableProposedApi": true,
-	"engines": {
-		"vscode": "^1.49.0"
-	},
+	"description": "Node.js Notebook for VS Code",
 	"categories": [
 		"Other"
 	],
-	"activationEvents": [
-		"onNotebookEditor:nodebook",
-		"onNotebook:nodebook",
-		"onDebugDynamicConfigurations:node"
-	],
 	"main": "./out/extension.js",
+	"scripts": {
+		"compile": "tsc -p ./",
+		"lint": "eslint src --ext ts",
+		"pretest": "yarn run compile && yarn run lint",
+		"test": "node ./out/test/runTest.js",
+		"updatetypes": "cd src/types && vscode-dts dev && vscode-dts master",
+		"vscode:prepublish": "yarn run compile",
+		"watch": "tsc -watch -p ./"
+	},
 	"contributes": {
-		"languages": [
-			{
-				"id": "nodebook",
-				"aliases": [
-					"Node.js Notebook"
-				]
-			}
-		],
-		"notebookProvider": [
-			{
-				"viewType": "nodebook",
-				"displayName": "Node.js Notebook",
-				"selector": [
-					{
-						"filenamePattern": "*.nodebook"
-					}
-				]
-			}
-		],
 		"commands": [
 			{
 				"title": "Toggle Debugging",
@@ -46,6 +27,14 @@
 				"title": "Restart Kernel",
 				"command": "nodebook.restartKernel",
 				"icon": "$(refresh)"
+			}
+		],
+		"languages": [
+			{
+				"id": "nodebook",
+				"aliases": [
+					"Node.js Notebook"
+				]
 			}
 		],
 		"menus": {
@@ -61,34 +50,45 @@
 					"group": "navigation@2"
 				}
 			]
-		}
+		},
+		"notebookProvider": [
+			{
+				"viewType": "nodebook",
+				"displayName": "Node.js Notebook",
+				"selector": [
+					{
+						"filenamePattern": "*.nodebook"
+					}
+				]
+			}
+		]
 	},
-	"scripts": {
-		"vscode:prepublish": "yarn run compile",
-		"compile": "tsc -p ./",
-		"lint": "eslint src --ext ts",
-		"watch": "tsc -watch -p ./",
-		"pretest": "yarn run compile && yarn run lint",
-		"test": "node ./out/test/runTest.js",
-		"updatetypes": "cd src/types && vscode-dts dev && vscode-dts master"
+	"activationEvents": [
+		"onNotebookEditor:nodebook",
+		"onNotebook:nodebook",
+		"onDebugDynamicConfigurations:node"
+	],
+	"dependencies": {
+		"get-port": "5.1.1",
+		"rimraf": "3.0.2",
+		"vscode-debugprotocol": "1.41.0"
 	},
 	"devDependencies": {
-		"@types/glob": "^7.1.3",
-		"@types/mocha": "^8.0.3",
-		"@types/node": "^13.11.0",
-		"@typescript-eslint/eslint-plugin": "^4.1.1",
-		"@typescript-eslint/parser": "^4.1.1",
-		"eslint": "^7.9.0",
-		"eslint-plugin-header": "^3.1.0",
-		"glob": "^7.1.6",
-		"mocha": "^8.1.3",
-		"typescript": "^4.0.2",
-		"vscode-test": "^1.4.0",
-		"vscode-dts": "^0.3.1"
+		"@types/glob": "7.1.3",
+		"@types/mocha": "8.0.3",
+		"@types/node": "13.11.0",
+		"@typescript-eslint/eslint-plugin": "4.1.1",
+		"@typescript-eslint/parser": "4.1.1",
+		"eslint": "7.9.0",
+		"eslint-plugin-header": "3.1.0",
+		"glob": "7.1.6",
+		"mocha": "8.1.3",
+		"typescript": "4.0.2",
+		"vscode-dts": "0.3.1",
+		"vscode-test": "1.4.0"
 	},
-	"dependencies": {
-		"vscode-debugprotocol": "1.41.0",
-		"rimraf": "^3.0.2",
-		"get-port": "^5.1.1"
-	}
+	"engines": {
+		"vscode": "1.49.0"
+	},
+	"enableProposedApi": true
 }

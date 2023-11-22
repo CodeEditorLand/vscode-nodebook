@@ -1,94 +1,109 @@
 {
-	"name": "vscode-nodebook",
-	"displayName": "Nodebook",
-	"version": "1.0.0",
-	"description": "Node.js Notebook for VS Code",
-	"categories": [
-		"Other"
-	],
-	"main": "./out/extension.js",
-	"scripts": {
-		"compile": "tsc -p ./",
-		"lint": "eslint src --ext ts",
-		"pretest": "yarn run compile && yarn run lint",
-		"test": "node ./out/test/runTest.js",
-		"updatetypes": "cd src/types && vscode-dts dev && vscode-dts master",
-		"vscode:prepublish": "yarn run compile",
-		"watch": "tsc -watch -p ./"
-	},
-	"contributes": {
-		"commands": [
-			{
-				"title": "Toggle Debugging",
-				"command": "nodebook.toggleDebugging",
-				"icon": "$(bug)"
-			},
-			{
-				"title": "Restart Kernel",
-				"command": "nodebook.restartKernel",
-				"icon": "$(refresh)"
-			}
-		],
-		"languages": [
-			{
-				"id": "nodebook",
-				"aliases": [
-					"Node.js Notebook"
-				]
-			}
-		],
-		"menus": {
-			"editor/title": [
-				{
-					"command": "nodebook.toggleDebugging",
-					"when": "notebookEditorFocused",
-					"group": "navigation@1"
-				},
-				{
-					"command": "nodebook.restartKernel",
-					"when": "notebookEditorFocused",
-					"group": "navigation@2"
-				}
-			]
-		},
-		"notebookProvider": [
-			{
-				"viewType": "nodebook",
-				"displayName": "Node.js Notebook",
-				"selector": [
-					{
-						"filenamePattern": "*.nodebook"
-					}
-				]
-			}
-		]
-	},
-	"activationEvents": [
-		"onNotebookEditor:nodebook",
-		"onNotebook:nodebook",
-		"onDebugDynamicConfigurations:node"
-	],
-	"dependencies": {
-		"get-port": "7.0.0",
-		"rimraf": "5.0.5",
-		"vscode-debugprotocol": "1.41.0"
-	},
-	"devDependencies": {
-		"@types/glob": "8.1.0",
-		"@types/mocha": "10.0.4",
-		"@types/node": "20.9.2",
-		"@typescript-eslint/eslint-plugin": "6.11.0",
-		"@typescript-eslint/parser": "6.11.0",
-		"eslint": "8.54.0",
-		"eslint-plugin-header": "3.1.1",
-		"glob": "10.3.10",
-		"mocha": "10.2.0",
-		"typescript": "5.2.2",
-		"vscode-dts": "0.3.1",
-		"vscode-test": "1.4.0"
-	},
-	"engines": {
-		"vscode": "1.49.0"
-	},
-	"enableProposedApi": true
+  "name": "vscode-nodebook",
+  "displayName": "Nodebook",
+  "version": "0.0.1",
+  "description": "Node.js Notebook for VS Code",
+  "main": "./out/extension.js",
+  "scripts": {
+    "compile": "tsc -p ./",
+    "lint": "eslint src --ext ts",
+    "pretest": "yarn run compile && yarn run lint",
+    "test": "node ./out/test/runTest.js",
+    "updatetypes": "cd src/types && vscode-dts dev && vscode-dts master",
+    "vscode:prepublish": "yarn run compile",
+    "watch": "tsc -watch -p ./",
+    "prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "title": "Toggle Debugging",
+        "command": "nodebook.toggleDebugging",
+        "icon": "$(bug)"
+      },
+      {
+        "title": "Restart Kernel",
+        "command": "nodebook.restartKernel",
+        "icon": "$(refresh)"
+      }
+    ],
+    "languages": [
+      {
+        "id": "nodebook",
+        "aliases": [
+          "Node.js Notebook"
+        ]
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "nodebook.toggleDebugging",
+          "when": "notebookEditorFocused",
+          "group": "navigation@1"
+        },
+        {
+          "command": "nodebook.restartKernel",
+          "when": "notebookEditorFocused",
+          "group": "navigation@2"
+        }
+      ]
+    },
+    "notebookProvider": [
+      {
+        "viewType": "nodebook",
+        "displayName": "Node.js Notebook",
+        "selector": [
+          {
+            "filenamePattern": "*.nodebook"
+          }
+        ]
+      }
+    ]
+  },
+  "activationEvents": [
+    "onNotebookEditor:nodebook",
+    "onNotebook:nodebook",
+    "onDebugDynamicConfigurations:node"
+  ],
+  "dependencies": {
+    "get-port": "7.0.0",
+    "rimraf": "5.0.5",
+    "vscode-debugprotocol": "1.41.0"
+  },
+  "devDependencies": {
+    "@types/glob": "8.1.0",
+    "@types/mocha": "10.0.6",
+    "@types/node": "20.9.4",
+    "@typescript-eslint/eslint-plugin": "6.12.0",
+    "@typescript-eslint/parser": "6.12.0",
+    "eslint-plugin-header": "3.1.1",
+    "glob": "10.3.10",
+    "mocha": "10.2.0",
+    "typescript": "5.3.2",
+    "vscode-dts": "0.3.1",
+    "vscode-test": "1.4.0",
+    "typescript-esbuild": "0.3.1"
+  },
+  "enableProposedApi": true,
+  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
+  "bugs": {
+    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
+  },
+  "license": "MIT",
+  "type": "module",
+  "publisher": "playform",
+  "private": "false",
+  "publishConfig": {
+    "access": "public"
+  },
+  "author": {
+    "name": "Nikola Hristov",
+    "email": "nikola@nikolahristov.tech",
+    "url": "https://nikolahristov.tech"
+  }
 }

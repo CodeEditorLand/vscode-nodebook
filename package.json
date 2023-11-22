@@ -2,17 +2,34 @@
   "name": "vscode-nodebook",
   "displayName": "Nodebook",
   "version": "0.0.1",
+  "private": "false",
   "description": "Node.js Notebook for VS Code",
+  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
+  "bugs": {
+    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Nikola Hristov",
+    "email": "nikola@nikolahristov.tech",
+    "url": "https://nikolahristov.tech"
+  },
+  "publisher": "playform",
+  "type": "module",
   "main": "./out/extension.js",
   "scripts": {
     "compile": "tsc -p ./",
     "lint": "eslint src --ext ts",
+    "prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
     "pretest": "yarn run compile && yarn run lint",
     "test": "node ./out/test/runTest.js",
     "updatetypes": "cd src/types && vscode-dts dev && vscode-dts master",
     "vscode:prepublish": "yarn run compile",
-    "watch": "tsc -watch -p ./",
-    "prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'"
+    "watch": "tsc -watch -p ./"
   },
   "contributes": {
     "commands": [
@@ -81,29 +98,12 @@
     "glob": "10.3.10",
     "mocha": "10.2.0",
     "typescript": "5.3.2",
+    "typescript-esbuild": "0.3.1",
     "vscode-dts": "0.3.1",
-    "vscode-test": "1.4.0",
-    "typescript-esbuild": "0.3.1"
+    "vscode-test": "1.4.0"
   },
-  "enableProposedApi": true,
-  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
-  "bugs": {
-    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
-  },
-  "license": "MIT",
-  "type": "module",
-  "publisher": "playform",
-  "private": "false",
   "publishConfig": {
     "access": "public"
   },
-  "author": {
-    "name": "Nikola Hristov",
-    "email": "nikola@nikolahristov.tech",
-    "url": "https://nikolahristov.tech"
-  }
+  "enableProposedApi": true
 }

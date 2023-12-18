@@ -37,7 +37,7 @@ export class Nodebook implements vscode.Disposable {
 
 		this.debugging = !this.debugging;
 
-		for (let cell of document.cells) {
+		for (const cell of document.cells) {
 			if (cell.cellKind === vscode.CellKind.Code) {
 				cell.metadata.breakpointMargin = this.debugging;
 			}
@@ -77,7 +77,7 @@ export class Nodebook implements vscode.Disposable {
 			try {
 				await vscode.debug.startDebugging(
 					undefined,
-					this.nodeKernel.getLaunchConfig()
+					this.nodeKernel.getLaunchConfig(),
 				);
 			} catch (err) {
 				console.log(`error: ${err}`);

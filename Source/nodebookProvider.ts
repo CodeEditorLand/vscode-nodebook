@@ -4,8 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import * as vscode from "vscode";
-import { Nodebook } from "./nodebook";
 import { NotebookDocumentEditEvent } from "vscode";
+import { Nodebook } from "./nodebook";
 
 interface RawNotebookCell {
 	language: string;
@@ -46,8 +46,8 @@ export class NodebookContentProvider
 						project,
 						(key) =>
 							document.cells.some(
-								(cell) => cell.uri.toString() === key
-							) || key === docKey
+								(cell) => cell.uri.toString() === key,
+							) || key === docKey,
 					);
 				}
 			}),
@@ -62,7 +62,7 @@ export class NodebookContentProvider
 			vscode.debug.onDidStartDebugSession((session) => {
 				if (session.configuration.__notebookID) {
 					const project = this.lookupNodebook(
-						session.configuration.__notebookID
+						session.configuration.__notebookID,
 					);
 					if (project) {
 						project.addDebugSession(session);
@@ -73,7 +73,7 @@ export class NodebookContentProvider
 			vscode.debug.onDidTerminateDebugSession((session) => {
 				if (session.configuration.__notebookID) {
 					const project = this.lookupNodebook(
-						session.configuration.__notebookID
+						session.configuration.__notebookID,
 					);
 					if (project) {
 						project.removeDebugSession(session);
@@ -85,11 +85,11 @@ export class NodebookContentProvider
 			...debugTypes.map((dt) =>
 				vscode.debug.registerDebugAdapterTrackerFactory(dt, {
 					createDebugAdapterTracker: (
-						session: vscode.DebugSession
+						session: vscode.DebugSession,
 					): vscode.ProviderResult<vscode.DebugAdapterTracker> => {
 						if (session.configuration.__notebookID) {
 							const notebook = this.lookupNodebook(
-								session.configuration.__notebookID
+								session.configuration.__notebookID,
 							);
 							if (notebook) {
 								return notebook.createTracker();
@@ -97,8 +97,8 @@ export class NodebookContentProvider
 						}
 						return undefined; // no tracker
 					},
-				})
-			)
+				}),
+			),
 		);
 
 		vscode.notebook.registerNotebookKernelProvider(
@@ -109,12 +109,12 @@ export class NodebookContentProvider
 				provideKernels: () => {
 					return [this];
 				},
-			}
+			},
 		);
 	}
 
 	public lookupNodebook(
-		keyOrUri: string | vscode.Uri | undefined
+		keyOrUri: string | vscode.Uri | undefined,
 	): Nodebook | undefined {
 		if (keyOrUri) {
 			let key: string;
@@ -123,7 +123,7 @@ export class NodebookContentProvider
 			} else {
 				key = keyOrUri.toString();
 			}
-			for (let [association, value] of this._associations.values()) {
+			for (const [association, value] of this._associations.values()) {
 				if (association(key)) {
 					return value;
 				}
@@ -136,7 +136,7 @@ export class NodebookContentProvider
 		let contents = "";
 		try {
 			contents = Buffer.from(
-				await vscode.workspace.fs.readFile(uri)
+				await vscode.workspace.fs.readFile(uri),
 			).toString("utf8");
 		} catch {}
 
@@ -168,7 +168,7 @@ export class NodebookContentProvider
 
 	public saveNotebook(
 		document: vscode.NotebookDocument,
-		_cancellation: vscode.CancellationToken
+		_cancellation: vscode.CancellationToken,
 	): Promise<void> {
 		return this._save(document, document.uri);
 	}
@@ -176,14 +176,14 @@ export class NodebookContentProvider
 	public saveNotebookAs(
 		targetResource: vscode.Uri,
 		document: vscode.NotebookDocument,
-		_cancellation: vscode.CancellationToken
+		_cancellation: vscode.CancellationToken,
 	): Promise<void> {
 		return this._save(document, targetResource);
 	}
 
 	async resolveNotebook(
 		_document: vscode.NotebookDocument,
-		_webview: vscode.NotebookCommunication
+		_webview: vscode.NotebookCommunication,
 	): Promise<void> {
 		// nothing
 	}
@@ -191,7 +191,7 @@ export class NodebookContentProvider
 	async backupNotebook(
 		document: vscode.NotebookDocument,
 		context: vscode.NotebookDocumentBackupContext,
-		_cancellation: vscode.CancellationToken
+		_cancellation: vscode.CancellationToken,
 	): Promise<vscode.NotebookDocumentBackup> {
 		await this._save(document, context.destination);
 		return {
@@ -202,7 +202,7 @@ export class NodebookContentProvider
 
 	public async executeCell(
 		_document: vscode.NotebookDocument,
-		cell: vscode.NotebookCell
+		cell: vscode.NotebookCell,
 	): Promise<void> {
 		let output = "";
 		let error: Error | undefined;
@@ -235,13 +235,13 @@ export class NodebookContentProvider
 
 	public cancelCellExecution(
 		_document: vscode.NotebookDocument,
-		_cell: vscode.NotebookCell
+		_cell: vscode.NotebookCell,
 	): void {
 		// not yet supported
 	}
 
 	public async executeAllCells(
-		document: vscode.NotebookDocument
+		document: vscode.NotebookDocument,
 	): Promise<void> {
 		for (const cell of document.cells) {
 			await this.executeCell(document, cell);
@@ -260,10 +260,10 @@ export class NodebookContentProvider
 
 	private async _save(
 		document: vscode.NotebookDocument,
-		targetResource: vscode.Uri
+		targetResource: vscode.Uri,
 	): Promise<void> {
-		let contents: RawNotebookCell[] = [];
-		for (let cell of document.cells) {
+		const contents: RawNotebookCell[] = [];
+		for (const cell of document.cells) {
 			contents.push({
 				kind: cell.cellKind,
 				language: cell.language,
@@ -272,14 +272,14 @@ export class NodebookContentProvider
 		}
 		await vscode.workspace.fs.writeFile(
 			targetResource,
-			Buffer.from(JSON.stringify(contents))
+			Buffer.from(JSON.stringify(contents)),
 		);
 	}
 
 	private register(
 		key: string,
 		project: Nodebook,
-		association: ProjectAssociation
+		association: ProjectAssociation,
 	) {
 		this._associations.set(key, [association, project]);
 	}

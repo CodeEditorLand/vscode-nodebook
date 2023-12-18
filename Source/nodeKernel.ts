@@ -3,11 +3,11 @@
  *	Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as vscode from "vscode";
 import * as cp from "child_process";
 import * as fs from "fs";
-import * as PATH from "path";
 import * as os from "os";
+import * as PATH from "path";
+import * as vscode from "vscode";
 import { DebugProtocol } from "vscode-debugprotocol";
 const rmdir = require("rimraf");
 const getPort = require("get-port");
@@ -108,7 +108,7 @@ export class NodeKernel {
 				// Debug Adapter -> VS Code
 				visitSources(m, (source) => {
 					if (source.path) {
-						let cell = this.pathToCell.get(source.path);
+						const cell = this.pathToCell.get(source.path);
 						if (cell) {
 							source.path = cell.uri.toString();
 							source.name = PATH.basename(cell.uri.fsPath);
@@ -133,12 +133,12 @@ export class NodeKernel {
 			if (cellUri.scheme === "vscode-notebook-cell") {
 				// find cell in document by matching its URI
 				const cell = this.document.cells.find(
-					(c) => c.uri.toString() === uri
+					(c) => c.uri.toString() === uri,
 				);
 				if (cell) {
 					if (!this.tmpDirectory) {
 						this.tmpDirectory = fs.mkdtempSync(
-							PATH.join(os.tmpdir(), "vscode-nodebook-")
+							PATH.join(os.tmpdir(), "vscode-nodebook-"),
 						);
 					}
 					const cellPath = `${this.tmpDirectory}/nodebook_cell_${cellUri.fragment}.js`;
@@ -159,7 +159,7 @@ export class NodeKernel {
 // this vistor could be moved into the DAP npm module (it must be kept in sync with the DAP spec)
 function visitSources(
 	msg: DebugProtocol.ProtocolMessage,
-	visitor: (source: DebugProtocol.Source) => void
+	visitor: (source: DebugProtocol.Source) => void,
 ): void {
 	const sourceHook = (source: DebugProtocol.Source | undefined) => {
 		if (source) {
@@ -176,13 +176,13 @@ function visitSources(
 					break;
 				case "loadedSource":
 					sourceHook(
-						(<DebugProtocol.LoadedSourceEvent>event).body.source
+						(<DebugProtocol.LoadedSourceEvent>event).body.source,
 					);
 					break;
 				case "breakpoint":
 					sourceHook(
 						(<DebugProtocol.BreakpointEvent>event).body.breakpoint
-							.source
+							.source,
 					);
 					break;
 				default:
@@ -196,26 +196,26 @@ function visitSources(
 					sourceHook(
 						(<DebugProtocol.SetBreakpointsArguments>(
 							request.arguments
-						)).source
+						)).source,
 					);
 					break;
 				case "breakpointLocations":
 					sourceHook(
 						(<DebugProtocol.BreakpointLocationsArguments>(
 							request.arguments
-						)).source
+						)).source,
 					);
 					break;
 				case "source":
 					sourceHook(
 						(<DebugProtocol.SourceArguments>request.arguments)
-							.source
+							.source,
 					);
 					break;
 				case "gotoTargets":
 					sourceHook(
 						(<DebugProtocol.GotoTargetsArguments>request.arguments)
-							.source
+							.source,
 					);
 					break;
 				case "launchVSCode":
@@ -233,7 +233,7 @@ function visitSources(
 						(<DebugProtocol.StackTraceResponse>(
 							response
 						)).body.stackFrames.forEach((frame) =>
-							sourceHook(frame.source)
+							sourceHook(frame.source),
 						);
 						break;
 					case "loadedSources":
@@ -245,21 +245,21 @@ function visitSources(
 						(<DebugProtocol.ScopesResponse>(
 							response
 						)).body.scopes.forEach((scope) =>
-							sourceHook(scope.source)
+							sourceHook(scope.source),
 						);
 						break;
 					case "setFunctionBreakpoints":
 						(<DebugProtocol.SetFunctionBreakpointsResponse>(
 							response
 						)).body.breakpoints.forEach((bp) =>
-							sourceHook(bp.source)
+							sourceHook(bp.source),
 						);
 						break;
 					case "setBreakpoints":
 						(<DebugProtocol.SetBreakpointsResponse>(
 							response
 						)).body.breakpoints.forEach((bp) =>
-							sourceHook(bp.source)
+							sourceHook(bp.source),
 						);
 						break;
 					default:

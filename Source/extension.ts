@@ -12,14 +12,14 @@ export function activate(context: vscode.ExtensionContext) {
 	context.subscriptions.push(
 		vscode.notebook.registerNotebookContentProvider(
 			"nodebook",
-			nodebookContentProvider,
+			nodebookContentProvider
 		),
 
 		vscode.commands.registerCommand("nodebook.toggleDebugging", () => {
 			if (vscode.window.activeNotebookEditor) {
 				const { document } = vscode.window.activeNotebookEditor;
 				const nodebook = nodebookContentProvider.lookupNodebook(
-					document.uri,
+					document.uri
 				);
 				if (nodebook) {
 					nodebook.toggleDebugging(document);
@@ -31,13 +31,13 @@ export function activate(context: vscode.ExtensionContext) {
 			if (vscode.window.activeNotebookEditor) {
 				const { document } = vscode.window.activeNotebookEditor;
 				const nodebook = nodebookContentProvider.lookupNodebook(
-					document.uri,
+					document.uri
 				);
 				if (nodebook) {
 					nodebook.restartKernel();
 				}
 			}
-		}),
+		})
 	);
 }
 

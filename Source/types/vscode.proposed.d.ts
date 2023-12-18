@@ -109,7 +109,7 @@ declare module "vscode" {
 		 * @return A [disposable](#Disposable) that unregisters this provider when being disposed.
 		 */
 		export function registerAuthenticationProvider(
-			provider: AuthenticationProvider,
+			provider: AuthenticationProvider
 		): Disposable;
 
 		/**
@@ -145,7 +145,7 @@ declare module "vscode" {
 		 */
 		export function logout(
 			providerId: string,
-			sessionId: string,
+			sessionId: string
 		): Thenable<void>;
 
 		/**
@@ -233,10 +233,10 @@ declare module "vscode" {
 	export class RemoteAuthorityResolverError extends Error {
 		static NotAvailable(
 			message?: string,
-			handled?: boolean,
+			handled?: boolean
 		): RemoteAuthorityResolverError;
 		static TemporarilyNotAvailable(
-			message?: string,
+			message?: string
 		): RemoteAuthorityResolverError;
 
 		constructor(message?: string);
@@ -245,7 +245,7 @@ declare module "vscode" {
 	export interface RemoteAuthorityResolver {
 		resolve(
 			authority: string,
-			context: RemoteAuthorityResolverContext,
+			context: RemoteAuthorityResolverContext
 		): ResolverResult | Thenable<ResolverResult>;
 		/**
 		 * Can be optionally implemented if the extension can forward ports better than the core.
@@ -254,7 +254,7 @@ declare module "vscode" {
 		 */
 		tunnelFactory?: (
 			tunnelOptions: TunnelOptions,
-			elevate?: boolean,
+			elevate?: boolean
 		) => Thenable<Tunnel> | undefined;
 
 		/**
@@ -263,7 +263,7 @@ declare module "vscode" {
 		showCandidatePort?: (
 			host: string,
 			port: number,
-			detail: string,
+			detail: string
 		) => Thenable<boolean>;
 	}
 
@@ -277,7 +277,7 @@ declare module "vscode" {
 		 * @param tunnelOptions The `localPort` is a suggestion only. If that port is not available another will be chosen.
 		 */
 		export function openTunnel(
-			tunnelOptions: TunnelOptions,
+			tunnelOptions: TunnelOptions
 		): Thenable<Tunnel>;
 
 		/**
@@ -313,10 +313,10 @@ declare module "vscode" {
 	export namespace workspace {
 		export function registerRemoteAuthorityResolver(
 			authorityPrefix: string,
-			resolver: RemoteAuthorityResolver,
+			resolver: RemoteAuthorityResolver
 		): Disposable;
 		export function registerResourceLabelFormatter(
-			formatter: ResourceLabelFormatter,
+			formatter: ResourceLabelFormatter
 		): Disposable;
 	}
 
@@ -338,7 +338,7 @@ declare module "vscode" {
 			editor: TextEditor,
 			line: number,
 			height: number,
-			options?: WebviewOptions,
+			options?: WebviewOptions
 		): WebviewEditorInset;
 	}
 
@@ -349,7 +349,7 @@ declare module "vscode" {
 	export interface FileSystemProvider {
 		open?(
 			resource: Uri,
-			options: { create: boolean },
+			options: { create: boolean }
 		): number | Thenable<number>;
 		close?(fd: number): void | Thenable<void>;
 		read?(
@@ -357,14 +357,14 @@ declare module "vscode" {
 			pos: number,
 			data: Uint8Array,
 			offset: number,
-			length: number,
+			length: number
 		): number | Thenable<number>;
 		write?(
 			fd: number,
 			pos: number,
 			data: Uint8Array,
 			offset: number,
-			length: number,
+			length: number
 		): number | Thenable<number>;
 	}
 
@@ -588,7 +588,7 @@ declare module "vscode" {
 			query: TextSearchQuery,
 			options: TextSearchOptions,
 			progress: Progress<TextSearchResult>,
-			token: CancellationToken,
+			token: CancellationToken
 		): ProviderResult<TextSearchComplete>;
 	}
 
@@ -641,7 +641,7 @@ declare module "vscode" {
 		provideFileSearchResults(
 			query: FileSearchQuery,
 			options: FileSearchOptions,
-			token: CancellationToken,
+			token: CancellationToken
 		): ProviderResult<Uri[]>;
 	}
 
@@ -657,7 +657,7 @@ declare module "vscode" {
 		 */
 		export function registerFileSearchProvider(
 			scheme: string,
-			provider: FileSearchProvider,
+			provider: FileSearchProvider
 		): Disposable;
 
 		/**
@@ -671,7 +671,7 @@ declare module "vscode" {
 		 */
 		export function registerTextSearchProvider(
 			scheme: string,
-			provider: TextSearchProvider,
+			provider: TextSearchProvider
 		): Disposable;
 	}
 
@@ -758,7 +758,7 @@ declare module "vscode" {
 		export function findTextInFiles(
 			query: TextSearchQuery,
 			callback: (result: TextSearchResult) => void,
-			token?: CancellationToken,
+			token?: CancellationToken
 		): Thenable<TextSearchComplete>;
 
 		/**
@@ -773,7 +773,7 @@ declare module "vscode" {
 			query: TextSearchQuery,
 			options: FindTextInFilesOptions,
 			callback: (result: TextSearchResult) => void,
-			token?: CancellationToken,
+			token?: CancellationToken
 		): Thenable<TextSearchComplete>;
 	}
 
@@ -809,7 +809,7 @@ declare module "vscode" {
 		export function registerDiffInformationCommand(
 			command: string,
 			callback: (diff: LineChange[], ...args: any[]) => any,
-			thisArg?: any,
+			thisArg?: any
 		): Disposable;
 	}
 
@@ -870,13 +870,13 @@ declare module "vscode" {
 		 */
 		provideFileDecoration(
 			uri: Uri,
-			token: CancellationToken,
+			token: CancellationToken
 		): ProviderResult<FileDecoration>;
 	}
 
 	export namespace window {
 		export function registerDecorationProvider(
-			provider: FileDecorationProvider,
+			provider: FileDecorationProvider
 		): Disposable;
 	}
 
@@ -975,7 +975,7 @@ declare module "vscode" {
 		 */
 		validateInput?(
 			value: string,
-			cursorPosition: number,
+			cursorPosition: number
 		): ProviderResult<SourceControlInputBoxValidation | undefined | null>;
 	}
 
@@ -1088,7 +1088,7 @@ declare module "vscode" {
 		 */
 		resolveTreeItem?(
 			element: T,
-			item: TreeItem2,
+			item: TreeItem2
 		): TreeItem2 | Thenable<TreeItem2>;
 	}
 
@@ -1106,7 +1106,7 @@ declare module "vscode" {
 				select?: boolean;
 				focus?: boolean;
 				expand?: boolean | number;
-			},
+			}
 		): Thenable<void>;
 	}
 	//#endregion
@@ -1167,7 +1167,7 @@ declare module "vscode" {
 		 * @return A new status bar item.
 		 */
 		export function createStatusBarItem(
-			options?: StatusBarItemOptions,
+			options?: StatusBarItemOptions
 		): StatusBarItem;
 	}
 
@@ -1195,7 +1195,7 @@ declare module "vscode" {
 		provideOnTypeRenameRanges(
 			document: TextDocument,
 			position: Position,
-			token: CancellationToken,
+			token: CancellationToken
 		): ProviderResult<OnTypeRenameRanges>;
 	}
 
@@ -1213,7 +1213,7 @@ declare module "vscode" {
 		 */
 		export function registerOnTypeRenameRangeProvider(
 			selector: DocumentSelector,
-			provider: OnTypeRenameRangeProvider,
+			provider: OnTypeRenameRangeProvider
 		): Disposable;
 	}
 
@@ -1258,7 +1258,7 @@ declare module "vscode" {
 		moveCustomTextEditor?(
 			newDocument: TextDocument,
 			existingWebviewPanel: WebviewPanel,
-			token: CancellationToken,
+			token: CancellationToken
 		): Thenable<void>;
 	}
 
@@ -1353,7 +1353,7 @@ declare module "vscode" {
 		constructor(
 			mime: string,
 			value: unknown,
-			metadata?: Record<string, string | number | boolean>,
+			metadata?: Record<string, string | number | boolean>
 		);
 	}
 
@@ -1364,7 +1364,7 @@ declare module "vscode" {
 
 		constructor(
 			outputs: NotebookCellOutputItem[],
-			metadata?: Record<string, string | number | boolean>,
+			metadata?: Record<string, string | number | boolean>
 		);
 
 		//TODO@jrieken HACK to workaround dependency issues...
@@ -1552,26 +1552,26 @@ declare module "vscode" {
 	export interface WorkspaceEdit {
 		replaceNotebookMetadata(
 			uri: Uri,
-			value: NotebookDocumentMetadata,
+			value: NotebookDocumentMetadata
 		): void;
 		replaceNotebookCells(
 			uri: Uri,
 			start: number,
 			end: number,
 			cells: NotebookCellData[],
-			metadata?: WorkspaceEditEntryMetadata,
+			metadata?: WorkspaceEditEntryMetadata
 		): void;
 		replaceNotebookCellOutput(
 			uri: Uri,
 			index: number,
 			outputs: (NotebookCellOutput | CellOutput)[],
-			metadata?: WorkspaceEditEntryMetadata,
+			metadata?: WorkspaceEditEntryMetadata
 		): void;
 		replaceNotebookCellMetadata(
 			uri: Uri,
 			index: number,
 			cellMetadata: NotebookCellMetadata,
-			metadata?: WorkspaceEditEntryMetadata,
+			metadata?: WorkspaceEditEntryMetadata
 		): void;
 	}
 
@@ -1580,15 +1580,15 @@ declare module "vscode" {
 		replaceCells(
 			start: number,
 			end: number,
-			cells: NotebookCellData[],
+			cells: NotebookCellData[]
 		): void;
 		replaceCellOutput(
 			index: number,
-			outputs: (NotebookCellOutput | CellOutput)[],
+			outputs: (NotebookCellOutput | CellOutput)[]
 		): void;
 		replaceCellMetadata(
 			index: number,
-			metadata: NotebookCellMetadata,
+			metadata: NotebookCellMetadata
 		): void;
 	}
 
@@ -1676,17 +1676,17 @@ declare module "vscode" {
 		 * @return A promise that resolves with a value indicating if the edits could be applied.
 		 */
 		edit(
-			callback: (editBuilder: NotebookEditorEdit) => void,
+			callback: (editBuilder: NotebookEditorEdit) => void
 		): Thenable<boolean>;
 
 		setDecorations(
 			decorationType: NotebookEditorDecorationType,
-			range: NotebookCellRange,
+			range: NotebookCellRange
 		): void;
 
 		revealRange(
 			range: NotebookCellRange,
-			revealType?: NotebookEditorRevealType,
+			revealType?: NotebookEditorRevealType
 		): void;
 	}
 
@@ -1883,25 +1883,25 @@ declare module "vscode" {
 		 */
 		openNotebook(
 			uri: Uri,
-			openContext: NotebookDocumentOpenContext,
+			openContext: NotebookDocumentOpenContext
 		): NotebookData | Promise<NotebookData>;
 		resolveNotebook(
 			document: NotebookDocument,
-			webview: NotebookCommunication,
+			webview: NotebookCommunication
 		): Promise<void>;
 		saveNotebook(
 			document: NotebookDocument,
-			cancellation: CancellationToken,
+			cancellation: CancellationToken
 		): Promise<void>;
 		saveNotebookAs(
 			targetResource: Uri,
 			document: NotebookDocument,
-			cancellation: CancellationToken,
+			cancellation: CancellationToken
 		): Promise<void>;
 		backupNotebook(
 			document: NotebookDocument,
 			context: NotebookDocumentBackupContext,
-			cancellation: CancellationToken,
+			cancellation: CancellationToken
 		): Promise<NotebookDocumentBackup>;
 	}
 
@@ -1915,7 +1915,7 @@ declare module "vscode" {
 		executeCell(document: NotebookDocument, cell: NotebookCell): void;
 		cancelCellExecution(
 			document: NotebookDocument,
-			cell: NotebookCell,
+			cell: NotebookCell
 		): void;
 		executeAllCells(document: NotebookDocument): void;
 		cancelAllCellsExecution(document: NotebookDocument): void;
@@ -1936,13 +1936,13 @@ declare module "vscode" {
 		onDidChangeKernels?: Event<NotebookDocument | undefined>;
 		provideKernels(
 			document: NotebookDocument,
-			token: CancellationToken,
+			token: CancellationToken
 		): ProviderResult<T[]>;
 		resolveKernel?(
 			kernel: T,
 			document: NotebookDocument,
 			webview: NotebookCommunication,
-			token: CancellationToken,
+			token: CancellationToken
 		): ProviderResult<void>;
 	}
 
@@ -1998,20 +1998,20 @@ declare module "vscode" {
 					filenamePattern: NotebookFilenamePattern[];
 					exclusive?: boolean;
 				};
-			},
+			}
 		): Disposable;
 
 		export function registerNotebookKernelProvider(
 			selector: NotebookDocumentFilter,
-			provider: NotebookKernelProvider,
+			provider: NotebookKernelProvider
 		): Disposable;
 
 		export function createNotebookEditorDecorationType(
-			options: NotebookDecorationRenderOptions,
+			options: NotebookDecorationRenderOptions
 		): NotebookEditorDecorationType;
 		export function openNotebookDocument(
 			uri: Uri,
-			viewType?: string,
+			viewType?: string
 		): Promise<NotebookDocument>;
 		export const onDidOpenNotebookDocument: Event<NotebookDocument>;
 		export const onDidCloseNotebookDocument: Event<NotebookDocument>;
@@ -2035,7 +2035,7 @@ declare module "vscode" {
 		 */
 		export function createConcatTextDocument(
 			notebook: NotebookDocument,
-			selector?: DocumentSelector,
+			selector?: DocumentSelector
 		): NotebookConcatTextDocument;
 
 		export const onDidChangeActiveNotebookKernel: Event<{
@@ -2055,7 +2055,7 @@ declare module "vscode" {
 		export function createCellStatusBarItem(
 			cell: NotebookCell,
 			alignment?: NotebookCellStatusBarAlignment,
-			priority?: number,
+			priority?: number
 		): NotebookCellStatusBarItem;
 	}
 
@@ -2246,7 +2246,7 @@ declare module "vscode" {
 		provideTimeline(
 			uri: Uri,
 			options: TimelineOptions,
-			token: CancellationToken,
+			token: CancellationToken
 		): ProviderResult<Timeline>;
 	}
 
@@ -2264,7 +2264,7 @@ declare module "vscode" {
 		 */
 		export function registerTimelineProvider(
 			scheme: string | string[],
-			provider: TimelineProvider,
+			provider: TimelineProvider
 		): Disposable;
 	}
 
@@ -2287,7 +2287,7 @@ declare module "vscode" {
 	export namespace languages {
 		export function getTokenInformationAtPosition(
 			document: TextDocument,
-			position: Position,
+			position: Position
 		): Promise<TokenInformation>;
 	}
 

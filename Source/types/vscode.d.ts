@@ -545,7 +545,7 @@ declare module "vscode" {
 		/**
 		 * The new value for the [text editor's selections](#TextEditor.selections).
 		 */
-		readonly selections: ReadonlyArray<Selection>;
+		readonly selections: readonly Selection[];
 		/**
 		 * The [change kind](#TextEditorSelectionChangeKind) which has triggered this
 		 * event. Can be `undefined`.
@@ -564,7 +564,7 @@ declare module "vscode" {
 		/**
 		 * The new value for the [text editor's visible ranges](#TextEditor.visibleRanges).
 		 */
-		readonly visibleRanges: ReadonlyArray<Range>;
+		readonly visibleRanges: readonly Range[];
 	}
 
 	/**
@@ -1153,8 +1153,8 @@ declare module "vscode" {
 			location?:
 				| Position
 				| Range
-				| ReadonlyArray<Position>
-				| ReadonlyArray<Range>,
+				| readonly Position[]
+				| readonly Range[],
 			options?: { undoStopBefore: boolean; undoStopAfter: boolean },
 		): Thenable<boolean>;
 
@@ -2158,7 +2158,7 @@ declare module "vscode" {
 		/**
 		 * An array of diagnostics.
 		 */
-		readonly diagnostics: ReadonlyArray<Diagnostic>;
+		readonly diagnostics: readonly Diagnostic[];
 
 		/**
 		 * Requested kind of actions to return.
@@ -2286,7 +2286,7 @@ declare module "vscode" {
 		 * list of kinds may either be generic, such as `[CodeActionKind.Refactor]`, or list out every kind provided,
 		 * such as `[CodeActionKind.Refactor.Extract.append('function'), CodeActionKind.Refactor.Extract.append('constant'), ...]`.
 		 */
-		readonly providedCodeActionKinds?: ReadonlyArray<CodeActionKind>;
+		readonly providedCodeActionKinds?: readonly CodeActionKind[];
 
 		/**
 		 * Static documentation for a class of code actions.
@@ -2799,7 +2799,7 @@ declare module "vscode" {
 		/**
 		 * Tags for this symbol.
 		 */
-		tags?: ReadonlyArray<SymbolTag>;
+		tags?: readonly SymbolTag[];
 
 		/**
 		 * The location of this symbol.
@@ -2865,7 +2865,7 @@ declare module "vscode" {
 		/**
 		 * Tags for this symbol.
 		 */
-		tags?: ReadonlyArray<SymbolTag>;
+		tags?: readonly SymbolTag[];
 
 		/**
 		 * The range enclosing this symbol not including leading/trailing whitespace but everything else, e.g. comments and code.
@@ -3875,7 +3875,7 @@ declare module "vscode" {
 		/**
 		 * List of characters that trigger signature help.
 		 */
-		readonly triggerCharacters: ReadonlyArray<string>;
+		readonly triggerCharacters: readonly string[];
 
 		/**
 		 * List of characters that re-trigger signature help.
@@ -3883,7 +3883,7 @@ declare module "vscode" {
 		 * These trigger characters are only active when signature help is already showing. All trigger characters
 		 * are also counted as re-trigger characters.
 		 */
-		readonly retriggerCharacters: ReadonlyArray<string>;
+		readonly retriggerCharacters: readonly string[];
 	}
 
 	/**
@@ -3962,7 +3962,7 @@ declare module "vscode" {
 		/**
 		 * Tags for this completion item.
 		 */
-		tags?: ReadonlyArray<CompletionItemTag>;
+		tags?: readonly CompletionItemTag[];
 
 		/**
 		 * A human-readable string with additional information
@@ -4544,7 +4544,7 @@ declare module "vscode" {
 		/**
 		 * Tags for this item.
 		 */
-		tags?: ReadonlyArray<SymbolTag>;
+		tags?: readonly SymbolTag[];
 
 		/**
 		 * More detail for this item, e.g. the signature of a function.
@@ -5103,7 +5103,7 @@ declare module "vscode" {
 		/**
 		 * An array of resources for which diagnostics have changed.
 		 */
-		readonly uris: ReadonlyArray<Uri>;
+		readonly uris: readonly Uri[];
 	}
 
 	/**
@@ -5275,7 +5275,7 @@ declare module "vscode" {
 		 * @param uri A resource identifier.
 		 * @param diagnostics Array of diagnostics or `undefined`
 		 */
-		set(uri: Uri, diagnostics: ReadonlyArray<Diagnostic> | undefined): void;
+		set(uri: Uri, diagnostics: readonly Diagnostic[] | undefined): void;
 
 		/**
 		 * Replace all entries in this collection.
@@ -5287,11 +5287,7 @@ declare module "vscode" {
 		 *
 		 * @param entries An array of tuples, like `[[file1, [d1, d2]], [file2, [d3, d4, d5]]]`, or `undefined`.
 		 */
-		set(
-			entries: ReadonlyArray<
-				[Uri, ReadonlyArray<Diagnostic> | undefined]
-			>,
-		): void;
+		set(entries: readonly [Uri, readonly Diagnostic[] | undefined][]): void;
 
 		/**
 		 * Remove all diagnostics from this collection that belong
@@ -5316,7 +5312,7 @@ declare module "vscode" {
 		forEach(
 			callback: (
 				uri: Uri,
-				diagnostics: ReadonlyArray<Diagnostic>,
+				diagnostics: readonly Diagnostic[],
 				collection: DiagnosticCollection,
 			) => any,
 			thisArg?: any,
@@ -5329,7 +5325,7 @@ declare module "vscode" {
 		 * @param uri A resource identifier.
 		 * @returns An immutable array of [diagnostics](#Diagnostic) or `undefined`.
 		 */
-		get(uri: Uri): ReadonlyArray<Diagnostic> | undefined;
+		get(uri: Uri): readonly Diagnostic[] | undefined;
 
 		/**
 		 * Check if this collection contains diagnostics for a
@@ -6656,7 +6652,7 @@ declare module "vscode" {
 		/**
 		 * The currently active task executions or an empty array.
 		 */
-		export const taskExecutions: ReadonlyArray<TaskExecution>;
+		export const taskExecutions: readonly TaskExecution[];
 
 		/**
 		 * Fires when a task starts.
@@ -7115,7 +7111,7 @@ declare module "vscode" {
 		 *
 		 * Pass in an empty array to disallow access to any local resources.
 		 */
-		readonly localResourceRoots?: ReadonlyArray<Uri>;
+		readonly localResourceRoots?: readonly Uri[];
 
 		/**
 		 * Mappings of localhost ports used inside the webview.
@@ -7130,7 +7126,7 @@ declare module "vscode" {
 		 * *Note* that port mappings only work for `http` or `https` urls. Websocket urls (e.g. `ws://localhost:3000`)
 		 * cannot be mapped to another port.
 		 */
-		readonly portMapping?: ReadonlyArray<WebviewPortMapping>;
+		readonly portMapping?: readonly WebviewPortMapping[];
 	}
 
 	/**
@@ -8083,7 +8079,7 @@ declare module "vscode" {
 		/**
 		 * The currently opened terminals or an empty array.
 		 */
-		export const terminals: ReadonlyArray<Terminal>;
+		export const terminals: readonly Terminal[];
 
 		/**
 		 * The currently active terminal or `undefined`. The active terminal is the one that
@@ -9553,7 +9549,7 @@ declare module "vscode" {
 		/**
 		 * Buttons for actions in the UI.
 		 */
-		buttons: ReadonlyArray<QuickInputButton>;
+		buttons: readonly QuickInputButton[];
 
 		/**
 		 * An event signaling when a button was triggered.
@@ -9563,7 +9559,7 @@ declare module "vscode" {
 		/**
 		 * Items to pick from.
 		 */
-		items: ReadonlyArray<T>;
+		items: readonly T[];
 
 		/**
 		 * If multiple items can be selected at the same time. Defaults to false.
@@ -9583,7 +9579,7 @@ declare module "vscode" {
 		/**
 		 * Active items. This can be read and updated by the extension.
 		 */
-		activeItems: ReadonlyArray<T>;
+		activeItems: readonly T[];
 
 		/**
 		 * An event signaling when the active items have changed.
@@ -9593,7 +9589,7 @@ declare module "vscode" {
 		/**
 		 * Selected items. This can be read and updated by the extension.
 		 */
-		selectedItems: ReadonlyArray<T>;
+		selectedItems: readonly T[];
 
 		/**
 		 * An event signaling when the selected items have changed.
@@ -9637,7 +9633,7 @@ declare module "vscode" {
 		/**
 		 * Buttons for actions in the UI.
 		 */
-		buttons: ReadonlyArray<QuickInputButton>;
+		buttons: readonly QuickInputButton[];
 
 		/**
 		 * An event signaling when a button was triggered.
@@ -9722,7 +9718,7 @@ declare module "vscode" {
 		/**
 		 * An array of content changes.
 		 */
-		readonly contentChanges: ReadonlyArray<TextDocumentContentChangeEvent>;
+		readonly contentChanges: readonly TextDocumentContentChangeEvent[];
 	}
 
 	/**
@@ -9807,7 +9803,7 @@ declare module "vscode" {
 		/**
 		 * The files that are going to be created.
 		 */
-		readonly files: ReadonlyArray<Uri>;
+		readonly files: readonly Uri[];
 
 		/**
 		 * Allows to pause the event and to apply a [workspace edit](#WorkspaceEdit).
@@ -9846,7 +9842,7 @@ declare module "vscode" {
 		/**
 		 * The files that got created.
 		 */
-		readonly files: ReadonlyArray<Uri>;
+		readonly files: readonly Uri[];
 	}
 
 	/**
@@ -9860,7 +9856,7 @@ declare module "vscode" {
 		/**
 		 * The files that are going to be deleted.
 		 */
-		readonly files: ReadonlyArray<Uri>;
+		readonly files: readonly Uri[];
 
 		/**
 		 * Allows to pause the event and to apply a [workspace edit](#WorkspaceEdit).
@@ -9899,7 +9895,7 @@ declare module "vscode" {
 		/**
 		 * The files that got deleted.
 		 */
-		readonly files: ReadonlyArray<Uri>;
+		readonly files: readonly Uri[];
 	}
 
 	/**
@@ -9962,12 +9958,12 @@ declare module "vscode" {
 		/**
 		 * Added workspace folders.
 		 */
-		readonly added: ReadonlyArray<WorkspaceFolder>;
+		readonly added: readonly WorkspaceFolder[];
 
 		/**
 		 * Removed workspace folders.
 		 */
-		readonly removed: ReadonlyArray<WorkspaceFolder>;
+		readonly removed: readonly WorkspaceFolder[];
 	}
 
 	/**
@@ -10025,9 +10021,7 @@ declare module "vscode" {
 		 * List of workspace folders or `undefined` when no folder is open.
 		 * *Note* that the first entry corresponds to the value of `rootPath`.
 		 */
-		export const workspaceFolders:
-			| ReadonlyArray<WorkspaceFolder>
-			| undefined;
+		export const workspaceFolders: readonly WorkspaceFolder[] | undefined;
 
 		/**
 		 * The name of the workspace. `undefined` when no folder
@@ -10222,7 +10216,7 @@ declare module "vscode" {
 		/**
 		 * All text documents currently known to the system.
 		 */
-		export const textDocuments: ReadonlyArray<TextDocument>;
+		export const textDocuments: readonly TextDocument[];
 
 		/**
 		 * Opens a document. Will return early if this document is already open. Otherwise
@@ -11705,17 +11699,17 @@ declare module "vscode" {
 		/**
 		 * Added breakpoints.
 		 */
-		readonly added: ReadonlyArray<Breakpoint>;
+		readonly added: readonly Breakpoint[];
 
 		/**
 		 * Removed breakpoints.
 		 */
-		readonly removed: ReadonlyArray<Breakpoint>;
+		readonly removed: readonly Breakpoint[];
 
 		/**
 		 * Changed breakpoints.
 		 */
-		readonly changed: ReadonlyArray<Breakpoint>;
+		readonly changed: readonly Breakpoint[];
 	}
 
 	/**
@@ -12062,7 +12056,7 @@ declare module "vscode" {
 		/**
 		 * All extensions currently known to the system.
 		 */
-		export const all: ReadonlyArray<Extension<any>>;
+		export const all: readonly Extension<any>[];
 
 		/**
 		 * An event which fires when `extensions.all` changes. This can happen when extensions are
@@ -12121,7 +12115,7 @@ declare module "vscode" {
 		/**
 		 * The ordered comments of the thread.
 		 */
-		comments: ReadonlyArray<Comment>;
+		comments: readonly Comment[];
 
 		/**
 		 * Whether the thread should be collapsed or expanded when opening the document.
@@ -12393,7 +12387,7 @@ declare module "vscode" {
 		 * The permissions granted by the session's access token. Available scopes
 		 * are defined by the [AuthenticationProvider](#AuthenticationProvider).
 		 */
-		readonly scopes: ReadonlyArray<string>;
+		readonly scopes: readonly string[];
 	}
 
 	/**

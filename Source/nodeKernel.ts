@@ -26,7 +26,7 @@ export class NodeKernel {
 			this.debugPort = await getPort();
 			this.nodeRuntime = cp.spawn("node", [
 				`--inspect=${this.debugPort}`,
-				`-e`,
+				"-e",
 				`require('repl').start({ prompt: '', ignoreUndefined: true })`,
 			]);
 			if (this.nodeRuntime.stdout) {
@@ -168,56 +168,64 @@ function visitSources(
 	};
 
 	switch (msg.type) {
-		case "event":
+		case "event": {
 			const event = <DebugProtocol.Event>msg;
 			switch (event.event) {
-				case "output":
+				case "output": {
 					sourceHook((<DebugProtocol.OutputEvent>event).body.source);
 					break;
-				case "loadedSource":
+				}
+				case "loadedSource": {
 					sourceHook(
 						(<DebugProtocol.LoadedSourceEvent>event).body.source,
 					);
 					break;
-				case "breakpoint":
+				}
+				case "breakpoint": {
 					sourceHook(
 						(<DebugProtocol.BreakpointEvent>event).body.breakpoint
 							.source,
 					);
 					break;
+				}
 				default:
 					break;
 			}
 			break;
-		case "request":
+		}
+		case "request": {
 			const request = <DebugProtocol.Request>msg;
 			switch (request.command) {
-				case "setBreakpoints":
+				case "setBreakpoints": {
 					sourceHook(
 						(<DebugProtocol.SetBreakpointsArguments>(
 							request.arguments
 						)).source,
 					);
 					break;
-				case "breakpointLocations":
+				}
+				case "breakpointLocations": {
 					sourceHook(
 						(<DebugProtocol.BreakpointLocationsArguments>(
 							request.arguments
 						)).source,
 					);
 					break;
-				case "source":
+				}
+				case "source": {
 					sourceHook(
 						(<DebugProtocol.SourceArguments>request.arguments)
 							.source,
 					);
 					break;
-				case "gotoTargets":
+				}
+				case "gotoTargets": {
 					sourceHook(
 						(<DebugProtocol.GotoTargetsArguments>request.arguments)
 							.source,
 					);
 					break;
+				}
 				case "launchVSCode":
 					//request.arguments.args.forEach(arg => fixSourcePath(arg));
 					break;
@@ -225,47 +233,54 @@ function visitSources(
 					break;
 			}
 			break;
-		case "response":
+		}
+		case "response": {
 			const response = <DebugProtocol.Response>msg;
 			if (response.success && response.body) {
 				switch (response.command) {
-					case "stackTrace":
+					case "stackTrace": {
 						(<DebugProtocol.StackTraceResponse>(
 							response
 						)).body.stackFrames.forEach((frame) =>
 							sourceHook(frame.source),
 						);
 						break;
-					case "loadedSources":
+					}
+					case "loadedSources": {
 						(<DebugProtocol.LoadedSourcesResponse>(
 							response
 						)).body.sources.forEach((source) => sourceHook(source));
 						break;
-					case "scopes":
+					}
+					case "scopes": {
 						(<DebugProtocol.ScopesResponse>(
 							response
 						)).body.scopes.forEach((scope) =>
 							sourceHook(scope.source),
 						);
 						break;
-					case "setFunctionBreakpoints":
+					}
+					case "setFunctionBreakpoints": {
 						(<DebugProtocol.SetFunctionBreakpointsResponse>(
 							response
 						)).body.breakpoints.forEach((bp) =>
 							sourceHook(bp.source),
 						);
 						break;
-					case "setBreakpoints":
+					}
+					case "setBreakpoints": {
 						(<DebugProtocol.SetBreakpointsResponse>(
 							response
 						)).body.breakpoints.forEach((bp) =>
 							sourceHook(bp.source),
 						);
 						break;
+					}
 					default:
 						break;
 				}
 			}
 			break;
+		}
 	}
 }

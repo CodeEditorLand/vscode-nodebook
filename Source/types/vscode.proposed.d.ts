@@ -24,12 +24,12 @@ declare module "vscode" {
 		/**
 		 * The ids of the [authenticationProvider](#AuthenticationProvider)s that have been added.
 		 */
-		readonly added: ReadonlyArray<AuthenticationProviderInformation>;
+		readonly added: readonly AuthenticationProviderInformation[];
 
 		/**
 		 * The ids of the [authenticationProvider](#AuthenticationProvider)s that have been removed.
 		 */
-		readonly removed: ReadonlyArray<AuthenticationProviderInformation>;
+		readonly removed: readonly AuthenticationProviderInformation[];
 	}
 
 	/**
@@ -39,17 +39,17 @@ declare module "vscode" {
 		/**
 		 * The ids of the [AuthenticationSession](#AuthenticationSession)s that have been added.
 		 */
-		readonly added: ReadonlyArray<string>;
+		readonly added: readonly string[];
 
 		/**
 		 * The ids of the [AuthenticationSession](#AuthenticationSession)s that have been removed.
 		 */
-		readonly removed: ReadonlyArray<string>;
+		readonly removed: readonly string[];
 
 		/**
 		 * The ids of the [AuthenticationSession](#AuthenticationSession)s that have been changed.
 		 */
-		readonly changed: ReadonlyArray<string>;
+		readonly changed: readonly string[];
 	}
 
 	/**
@@ -84,7 +84,7 @@ declare module "vscode" {
 		/**
 		 * Returns an array of current sessions.
 		 */
-		getSessions(): Thenable<ReadonlyArray<AuthenticationSession>>;
+		getSessions(): Thenable<readonly AuthenticationSession[]>;
 
 		/**
 		 * Prompts a user to login.
@@ -123,18 +123,18 @@ declare module "vscode" {
 		 * The ids of the currently registered authentication providers.
 		 * @returns An array of the ids of authentication providers that are currently registered.
 		 */
-		export function getProviderIds(): Thenable<ReadonlyArray<string>>;
+		export function getProviderIds(): Thenable<readonly string[]>;
 
 		/**
 		 * @deprecated
 		 * An array of the ids of authentication providers that are currently registered.
 		 */
-		export const providerIds: ReadonlyArray<string>;
+		export const providerIds: readonly string[];
 
 		/**
 		 * An array of the information of authentication providers that are currently registered.
 		 */
-		export const providers: ReadonlyArray<AuthenticationProviderInformation>;
+		export const providers: readonly AuthenticationProviderInformation[];
 
 		/**
 		 * @deprecated
@@ -1520,7 +1520,7 @@ declare module "vscode" {
 		readonly viewType: string;
 		readonly isDirty: boolean;
 		readonly isUntitled: boolean;
-		readonly cells: ReadonlyArray<NotebookCell>;
+		readonly cells: readonly NotebookCell[];
 		readonly contentOptions: NotebookDocumentContentOptions;
 		languages: string[];
 		metadata: NotebookDocumentMetadata;
@@ -1712,7 +1712,7 @@ declare module "vscode" {
 		 * The affected document.
 		 */
 		readonly document: NotebookDocument;
-		readonly changes: ReadonlyArray<NotebookCellsChangeData>;
+		readonly changes: readonly NotebookCellsChangeData[];
 	}
 
 	export interface NotebookCellMoveEvent {
@@ -1753,7 +1753,7 @@ declare module "vscode" {
 
 	export interface NotebookEditorVisibleRangesChangeEvent {
 		readonly notebookEditor: NotebookEditor;
-		readonly visibleRanges: ReadonlyArray<NotebookCellRange>;
+		readonly visibleRanges: readonly NotebookCellRange[];
 	}
 
 	export interface NotebookCellData {
@@ -2016,7 +2016,7 @@ declare module "vscode" {
 		/**
 		 * All currently known notebook documents.
 		 */
-		export const notebookDocuments: ReadonlyArray<NotebookDocument>;
+		export const notebookDocuments: readonly NotebookDocument[];
 		export const onDidChangeNotebookDocumentMetadata: Event<NotebookDocumentMetadataChangeEvent>;
 		export const onDidChangeNotebookCells: Event<NotebookCellsChangeEvent>;
 		export const onDidChangeCellOutputs: Event<NotebookCellOutputsChangeEvent>;

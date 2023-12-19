@@ -54,7 +54,7 @@ export class Nodebook implements vscode.Disposable {
 
 	public addDebugSession(session: vscode.DebugSession) {
 		if (this.activeDebugSession) {
-			console.log(`error: there is already a debug session`);
+			console.log("error: there is already a debug session");
 			return;
 		}
 		this.activeDebugSession = session;

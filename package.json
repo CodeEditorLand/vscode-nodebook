@@ -1,83 +1,105 @@
 {
-	"name": "vscode-nodebook",
-	"displayName": "Nodebook",
-	"version": "1.0.0",
-	"description": "Node.js Notebook for VS Code",
-	"main": "./out/extension.js",
-	"scripts": {
-		"compile": "tsc -p ./",
-		"pretest": "yarn run compile && yarn run lint",
-		"test": "node ./out/test/runTest.js",
-		"updatetypes": "cd src/types && vscode-dts dev && vscode-dts master",
-		"vscode:prepublish": "yarn run compile",
-		"watch": "tsc -watch -p ./"
-	},
-	"contributes": {
-		"commands": [
-			{
-				"title": "Toggle Debugging",
-				"command": "nodebook.toggleDebugging",
-				"icon": "$(bug)"
-			},
-			{
-				"title": "Restart Kernel",
-				"command": "nodebook.restartKernel",
-				"icon": "$(refresh)"
-			}
-		],
-		"languages": [
-			{
-				"id": "nodebook",
-				"aliases": [
-					"Node.js Notebook"
-				]
-			}
-		],
-		"menus": {
-			"editor/title": [
-				{
-					"command": "nodebook.toggleDebugging",
-					"when": "notebookEditorFocused",
-					"group": "navigation@1"
-				},
-				{
-					"command": "nodebook.restartKernel",
-					"when": "notebookEditorFocused",
-					"group": "navigation@2"
-				}
-			]
-		},
-		"notebookProvider": [
-			{
-				"viewType": "nodebook",
-				"displayName": "Node.js Notebook",
-				"selector": [
-					{
-						"filenamePattern": "*.nodebook"
-					}
-				]
-			}
-		]
-	},
-	"activationEvents": [
-		"onNotebookEditor:nodebook",
-		"onNotebook:nodebook",
-		"onDebugDynamicConfigurations:node"
-	],
-	"dependencies": {
-		"get-port": "7.0.0",
-		"rimraf": "5.0.5",
-		"vscode-debugprotocol": "1.41.0"
-	},
-	"devDependencies": {
-		"@types/glob": "8.1.0",
-		"@types/mocha": "10.0.6",
-		"@types/node": "20.11.6",
-		"glob": "10.3.10",
-		"mocha": "10.2.0",
-		"typescript": "5.3.3",
-		"vscode-dts": "0.3.1",
-		"vscode-test": "1.4.0"
-	},
-	"enableProposedApi": true
+  "activationEvents": [
+    "onNotebookEditor:nodebook",
+    "onNotebook:nodebook",
+    "onDebugDynamicConfigurations:node"
+  ],
+  "author": {
+    "email": "nikola@nikolahristov.tech",
+    "name": "Nikola Hristov",
+    "url": "https://nikolahristov.tech"
+  },
+  "bugs": {
+    "url": "https://github.com/CodeEditorLand/CodeEditorLand/issues"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "nodebook.toggleDebugging",
+        "icon": "$(bug)",
+        "title": "Toggle Debugging"
+      },
+      {
+        "command": "nodebook.restartKernel",
+        "icon": "$(refresh)",
+        "title": "Restart Kernel"
+      }
+    ],
+    "languages": [
+      {
+        "aliases": [
+          "Node.js Notebook"
+        ],
+        "id": "nodebook"
+      }
+    ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "nodebook.toggleDebugging",
+          "group": "navigation@1",
+          "when": "notebookEditorFocused"
+        },
+        {
+          "command": "nodebook.restartKernel",
+          "group": "navigation@2",
+          "when": "notebookEditorFocused"
+        }
+      ]
+    },
+    "notebookProvider": [
+      {
+        "displayName": "Node.js Notebook",
+        "selector": [
+          {
+            "filenamePattern": "*.nodebook"
+          }
+        ],
+        "viewType": "nodebook"
+      }
+    ]
+  },
+  "dependencies": {
+    "get-port": "7.0.0",
+    "rimraf": "5.0.5",
+    "vscode-debugprotocol": "1.41.0"
+  },
+  "description": "Node.js Notebook for VS Code",
+  "devDependencies": {
+    "@types/glob": "8.1.0",
+    "@types/mocha": "10.0.6",
+    "@types/node": "20.11.6",
+    "glob": "10.3.10",
+    "mocha": "10.2.0",
+    "typescript": "5.3.3",
+    "typescript-esbuild": "0.3.3",
+    "vscode-dts": "0.3.1",
+    "vscode-test": "1.4.0"
+  },
+  "displayName": "Nodebook",
+  "enableProposedApi": true,
+  "homepage": "https://github.com/CodeEditorLand/CodeEditorLand#readme",
+  "license": "SEE LICENSE IN LICENSE",
+  "main": "./out/extension.js",
+  "name": "vscode-nodebook",
+  "private": false,
+  "publishConfig": {
+    "access": "public"
+  },
+  "publisher": "playform",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CodeEditorLand/CodeEditorLand.git"
+  },
+  "scripts": {
+    "compile": "tsc -p ./",
+    "prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
+    "pretest": "yarn run compile && yarn run lint",
+    "test": "node ./out/test/runTest.js",
+    "updatetypes": "cd src/types && vscode-dts dev && vscode-dts master",
+    "vscode:prepublish": "yarn run compile",
+    "watch": "tsc -watch -p ./"
+  },
+  "type": "module",
+  "version": "0.0.1"
 }

@@ -1,9 +1,32 @@
 {
-	"activationEvents": [
-		"onNotebookEditor:nodebook",
-		"onNotebook:nodebook",
-		"onDebugDynamicConfigurations:node"
-	],
+	"name": "vscode-nodebook",
+	"displayName": "Nodebook",
+	"version": "0.0.1",
+	"private": false,
+	"description": "Node.js Notebook for VS Code",
+	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
+	"bugs": {
+		"url": "https://github.com/CodeEditorLand/Foundation/issues"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
+	},
+	"license": "SEE LICENSE IN LICENSE",
+	"author": {
+		"name": "Playform",
+		"email": "Hello@Playform.Cloud",
+		"url": "https://playform.cloud"
+	},
+	"type": "module",
+	"main": "./out/extension.js",
+	"scripts": {
+		"compile": "tsc -p ./",
+		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
+		"updatetypes": "cd src/types && vscode-dts dev && vscode-dts master",
+		"vscode:prepublish": "yarn run compile",
+		"watch": "tsc -watch -p ./"
+	},
 	"contributes": {
 		"commands": [
 			{
@@ -51,12 +74,16 @@
 			}
 		]
 	},
+	"activationEvents": [
+		"onNotebookEditor:nodebook",
+		"onNotebook:nodebook",
+		"onDebugDynamicConfigurations:node"
+	],
 	"dependencies": {
 		"get-port": "^5.1.1",
 		"rimraf": "^3.0.2",
 		"vscode-debugprotocol": "1.41.0"
 	},
-	"description": "Node.js Notebook for VS Code",
 	"devDependencies": {
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.3",
@@ -68,16 +95,8 @@
 		"vscode-dts": "^0.3.1",
 		"vscode-test": "^1.4.0"
 	},
-	"displayName": "Nodebook",
-	"enableProposedApi": true,
-	"main": "./out/extension.js",
-	"name": "vscode-nodebook",
-	"scripts": {
-		"compile": "tsc -p ./",
-		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'",
-		"updatetypes": "cd src/types && vscode-dts dev && vscode-dts master",
-		"vscode:prepublish": "yarn run compile",
-		"watch": "tsc -watch -p ./"
+	"publishConfig": {
+		"access": "public"
 	},
-	"type": "module"
+	"enableProposedApi": true
 }

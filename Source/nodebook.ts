@@ -59,6 +59,7 @@ export class Nodebook implements vscode.Disposable {
 			console.log(`error: there is already a debug session`);
 			return;
 		}
+
 		this.activeDebugSession = session;
 	}
 
@@ -67,6 +68,7 @@ export class Nodebook implements vscode.Disposable {
 			console.log(`error: removed session doesn't match active session`);
 			return;
 		}
+
 		this.activeDebugSession = undefined;
 	}
 

@@ -1,9 +1,12 @@
 {
-	"activationEvents": [
-		"onNotebookEditor:nodebook",
-		"onNotebook:nodebook",
-		"onDebugDynamicConfigurations:node"
-	],
+	"name": "vscode-nodebook",
+	"displayName": "Nodebook",
+	"description": "Node.js Notebook for VS Code",
+	"main": "./out/extension.js",
+	"scripts": {
+		"compile": "tsc -p ./",
+		"updatetypes": "cd src/types && vscode-dts dev && vscode-dts master"
+	},
 	"contributes": {
 		"commands": [
 			{
@@ -51,22 +54,19 @@
 			}
 		]
 	},
+	"activationEvents": [
+		"onNotebookEditor:nodebook",
+		"onNotebook:nodebook",
+		"onDebugDynamicConfigurations:node"
+	],
 	"dependencies": {
 		"get-port": "7.1.0",
 		"rimraf": "6.0.1"
 	},
-	"description": "Node.js Notebook for VS Code",
 	"devDependencies": {
 		"@types/glob": "8.1.0",
 		"@types/node": "22.7.3",
 		"glob": "11.0.0"
 	},
-	"displayName": "Nodebook",
-	"enableProposedApi": true,
-	"main": "./out/extension.js",
-	"name": "vscode-nodebook",
-	"scripts": {
-		"compile": "tsc -p ./",
-		"updatetypes": "cd src/types && vscode-dts dev && vscode-dts master"
-	}
+	"enableProposedApi": true
 }

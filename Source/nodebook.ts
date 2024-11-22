@@ -26,6 +26,7 @@ export class Nodebook implements vscode.Disposable {
 		await this.stopDebugger();
 		await vscode.commands.executeCommand("notebook.clearAllCellsOutputs");
 		await this.nodeKernel.restart();
+
 		if (this.debugging) {
 			await this.startDebugger();
 		}
@@ -47,6 +48,7 @@ export class Nodebook implements vscode.Disposable {
 
 	public async eval(cell: vscode.NotebookCell): Promise<string> {
 		await this.nodeKernel.start();
+
 		if (this.debugging) {
 			await this.startDebugger();
 		}
@@ -56,6 +58,7 @@ export class Nodebook implements vscode.Disposable {
 	public addDebugSession(session: vscode.DebugSession) {
 		if (this.activeDebugSession) {
 			console.log(`error: there is already a debug session`);
+
 			return;
 		}
 		this.activeDebugSession = session;
@@ -64,6 +67,7 @@ export class Nodebook implements vscode.Disposable {
 	public removeDebugSession(session: vscode.DebugSession) {
 		if (this.activeDebugSession !== session) {
 			console.log(`error: removed session doesn't match active session`);
+
 			return;
 		}
 		this.activeDebugSession = undefined;

@@ -11,6 +11,7 @@ import * as vscode from "vscode";
 import { DebugProtocol } from "vscode-debugprotocol";
 
 const rmdir = require("rimraf");
+
 const getPort = require("get-port");
 
 export class NodeKernel {
@@ -30,6 +31,7 @@ export class NodeKernel {
 				`-e`,
 				`require('repl').start({ prompt: '', ignoreUndefined: true })`,
 			]);
+
 			if (this.nodeRuntime.stdout) {
 				this.nodeRuntime.stdout.on("data", (data: Buffer) => {
 					this.outputBuffer += data.toString();
@@ -80,6 +82,7 @@ export class NodeKernel {
 
 	public async eval(cell: vscode.NotebookCell): Promise<string> {
 		const cellPath = this.dumpCell(cell.uri.toString());
+
 		if (cellPath && this.nodeRuntime && this.nodeRuntime.stdin) {
 			this.outputBuffer = "";
 
@@ -98,6 +101,7 @@ export class NodeKernel {
 				visitSources(m, (source) => {
 					if (source.path) {
 						const cellPath = this.dumpCell(source.path);
+
 						if (cellPath) {
 							source.path = cellPath;
 						}
@@ -110,11 +114,13 @@ export class NodeKernel {
 				visitSources(m, (source) => {
 					if (source.path) {
 						let cell = this.pathToCell.get(source.path);
+
 						if (cell) {
 							source.path = cell.uri.toString();
 							source.name = PATH.basename(cell.uri.fsPath);
 							// append cell index to name
 							const cellIndex = this.document.cells.indexOf(cell);
+
 							if (cellIndex >= 0) {
 								source.name += `, Cell ${cellIndex + 1}`;
 							}
@@ -131,11 +137,13 @@ export class NodeKernel {
 	private dumpCell(uri: string): string | undefined {
 		try {
 			const cellUri = vscode.Uri.parse(uri, true);
+
 			if (cellUri.scheme === "vscode-notebook-cell") {
 				// find cell in document by matching its URI
 				const cell = this.document.cells.find(
 					(c) => c.uri.toString() === uri,
 				);
+
 				if (cell) {
 					if (!this.tmpDirectory) {
 						this.tmpDirectory = fs.mkdtempSync(
@@ -171,27 +179,36 @@ function visitSources(
 	switch (msg.type) {
 		case "event":
 			const event = <DebugProtocol.Event>msg;
+
 			switch (event.event) {
 				case "output":
 					sourceHook((<DebugProtocol.OutputEvent>event).body.source);
+
 					break;
+
 				case "loadedSource":
 					sourceHook(
 						(<DebugProtocol.LoadedSourceEvent>event).body.source,
 					);
+
 					break;
+
 				case "breakpoint":
 					sourceHook(
 						(<DebugProtocol.BreakpointEvent>event).body.breakpoint
 							.source,
 					);
+
 					break;
+
 				default:
 					break;
 			}
 			break;
+
 		case "request":
 			const request = <DebugProtocol.Request>msg;
+
 			switch (request.command) {
 				case "setBreakpoints":
 					sourceHook(
@@ -199,35 +216,47 @@ function visitSources(
 							request.arguments
 						)).source,
 					);
+
 					break;
+
 				case "breakpointLocations":
 					sourceHook(
 						(<DebugProtocol.BreakpointLocationsArguments>(
 							request.arguments
 						)).source,
 					);
+
 					break;
+
 				case "source":
 					sourceHook(
 						(<DebugProtocol.SourceArguments>request.arguments)
 							.source,
 					);
+
 					break;
+
 				case "gotoTargets":
 					sourceHook(
 						(<DebugProtocol.GotoTargetsArguments>request.arguments)
 							.source,
 					);
+
 					break;
+
 				case "launchVSCode":
 					//request.arguments.args.forEach(arg => fixSourcePath(arg));
+
 					break;
+
 				default:
 					break;
 			}
 			break;
+
 		case "response":
 			const response = <DebugProtocol.Response>msg;
+
 			if (response.success && response.body) {
 				switch (response.command) {
 					case "stackTrace":
@@ -236,33 +265,43 @@ function visitSources(
 						)).body.stackFrames.forEach((frame) =>
 							sourceHook(frame.source),
 						);
+
 						break;
+
 					case "loadedSources":
 						(<DebugProtocol.LoadedSourcesResponse>(
 							response
 						)).body.sources.forEach((source) => sourceHook(source));
+
 						break;
+
 					case "scopes":
 						(<DebugProtocol.ScopesResponse>(
 							response
 						)).body.scopes.forEach((scope) =>
 							sourceHook(scope.source),
 						);
+
 						break;
+
 					case "setFunctionBreakpoints":
 						(<DebugProtocol.SetFunctionBreakpointsResponse>(
 							response
 						)).body.breakpoints.forEach((bp) =>
 							sourceHook(bp.source),
 						);
+
 						break;
+
 					case "setBreakpoints":
 						(<DebugProtocol.SetBreakpointsResponse>(
 							response
 						)).body.breakpoints.forEach((bp) =>
 							sourceHook(bp.source),
 						);
+
 						break;
+
 					default:
 						break;
 				}

@@ -40,6 +40,7 @@ export class NodebookContentProvider
 		this._localDisposables.push(
 			vscode.notebook.onDidOpenNotebookDocument((document) => {
 				const docKey = document.uri.toString();
+
 				if (!this.lookupNodebook(docKey)) {
 					const project = new Nodebook(document);
 					this.register(
@@ -55,6 +56,7 @@ export class NodebookContentProvider
 
 			vscode.notebook.onDidCloseNotebookDocument((document) => {
 				const project = this.unregister(document.uri.toString());
+
 				if (project) {
 					project.dispose();
 				}
@@ -65,6 +67,7 @@ export class NodebookContentProvider
 					const project = this.lookupNodebook(
 						session.configuration.__notebookID,
 					);
+
 					if (project) {
 						project.addDebugSession(session);
 					}
@@ -76,6 +79,7 @@ export class NodebookContentProvider
 					const project = this.lookupNodebook(
 						session.configuration.__notebookID,
 					);
+
 					if (project) {
 						project.removeDebugSession(session);
 					}
@@ -92,6 +96,7 @@ export class NodebookContentProvider
 							const notebook = this.lookupNodebook(
 								session.configuration.__notebookID,
 							);
+
 							if (notebook) {
 								return notebook.createTracker();
 							}
@@ -119,6 +124,7 @@ export class NodebookContentProvider
 	): Nodebook | undefined {
 		if (keyOrUri) {
 			let key: string;
+
 			if (typeof keyOrUri === "string") {
 				key = keyOrUri;
 			} else {
@@ -135,6 +141,7 @@ export class NodebookContentProvider
 
 	async openNotebook(uri: vscode.Uri): Promise<vscode.NotebookData> {
 		let contents = "";
+
 		try {
 			contents = Buffer.from(
 				await vscode.workspace.fs.readFile(uri),
@@ -142,6 +149,7 @@ export class NodebookContentProvider
 		} catch {}
 
 		let raw: RawNotebookCell[];
+
 		try {
 			raw = <RawNotebookCell[]>JSON.parse(contents);
 		} catch {
@@ -195,6 +203,7 @@ export class NodebookContentProvider
 		_cancellation: vscode.CancellationToken,
 	): Promise<vscode.NotebookDocumentBackup> {
 		await this._save(document, context.destination);
+
 		return {
 			id: context.destination.toString(),
 			delete: () => vscode.workspace.fs.delete(context.destination),
@@ -206,8 +215,11 @@ export class NodebookContentProvider
 		cell: vscode.NotebookCell,
 	): Promise<void> {
 		let output = "";
+
 		let error: Error | undefined;
+
 		const nodebook = this.lookupNodebook(cell.uri);
+
 		if (nodebook) {
 			try {
 				output = await nodebook.eval(cell);
@@ -264,6 +276,7 @@ export class NodebookContentProvider
 		targetResource: vscode.Uri,
 	): Promise<void> {
 		let contents: RawNotebookCell[] = [];
+
 		for (let cell of document.cells) {
 			contents.push({
 				kind: cell.cellKind,
@@ -287,6 +300,7 @@ export class NodebookContentProvider
 
 	private unregister(key: string): Nodebook | undefined {
 		const project = this.lookupNodebook(key);
+
 		if (project) {
 			this._associations.delete(key);
 		}

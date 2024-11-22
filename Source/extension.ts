@@ -19,9 +19,11 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("nodebook.toggleDebugging", () => {
 			if (vscode.window.activeNotebookEditor) {
 				const { document } = vscode.window.activeNotebookEditor;
+
 				const nodebook = nodebookContentProvider.lookupNodebook(
 					document.uri,
 				);
+
 				if (nodebook) {
 					nodebook.toggleDebugging(document);
 				}
@@ -31,9 +33,11 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.commands.registerCommand("nodebook.restartKernel", () => {
 			if (vscode.window.activeNotebookEditor) {
 				const { document } = vscode.window.activeNotebookEditor;
+
 				const nodebook = nodebookContentProvider.lookupNodebook(
 					document.uri,
 				);
+
 				if (nodebook) {
 					nodebook.restartKernel();
 				}

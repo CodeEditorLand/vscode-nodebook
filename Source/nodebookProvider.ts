@@ -10,8 +10,11 @@ import { Nodebook } from "./nodebook";
 
 interface RawNotebookCell {
 	language: string;
+
 	value: string;
+
 	kind: vscode.CellKind;
+
 	editable?: boolean;
 }
 
@@ -25,9 +28,11 @@ export class NodebookContentProvider
 	implements vscode.NotebookContentProvider, vscode.NotebookKernel
 {
 	readonly id = "nodebookKernel";
+
 	public label = "Node.js Kernel";
 
 	private _localDisposables: vscode.Disposable[] = [];
+
 	private readonly _associations = new Map<
 		string,
 		[ProjectAssociation, Nodebook]
@@ -43,6 +48,7 @@ export class NodebookContentProvider
 
 				if (!this.lookupNodebook(docKey)) {
 					const project = new Nodebook(document);
+
 					this.register(
 						docKey,
 						project,
@@ -101,6 +107,7 @@ export class NodebookContentProvider
 								return notebook.createTracker();
 							}
 						}
+
 						return undefined; // no tracker
 					},
 				}),
@@ -130,12 +137,14 @@ export class NodebookContentProvider
 			} else {
 				key = keyOrUri.toString();
 			}
+
 			for (let [association, value] of this._associations.values()) {
 				if (association(key)) {
 					return value;
 				}
 			}
 		}
+
 		return undefined;
 	}
 
@@ -227,6 +236,7 @@ export class NodebookContentProvider
 				error = e;
 			}
 		}
+
 		if (error) {
 			cell.outputs = [
 				{
@@ -284,6 +294,7 @@ export class NodebookContentProvider
 				value: cell.document.getText(),
 			});
 		}
+
 		await vscode.workspace.fs.writeFile(
 			targetResource,
 			Buffer.from(JSON.stringify(contents)),
@@ -304,6 +315,7 @@ export class NodebookContentProvider
 		if (project) {
 			this._associations.delete(key);
 		}
+
 		return project;
 	}
 }

@@ -16,9 +16,12 @@ const getPort = require("get-port");
 
 export class NodeKernel {
 	private nodeRuntime: cp.ChildProcess | undefined;
+
 	private outputBuffer = ""; // collect output here
 	private pathToCell: Map<string, vscode.NotebookCell> = new Map();
+
 	private tmpDirectory?: string;
+
 	private debugPort?: number;
 
 	constructor(private document: vscode.NotebookDocument) {}
@@ -26,6 +29,7 @@ export class NodeKernel {
 	public async start() {
 		if (!this.nodeRuntime) {
 			this.debugPort = await getPort();
+
 			this.nodeRuntime = cp.spawn("node", [
 				`--inspect=${this.debugPort}`,
 				`-e`,
@@ -37,6 +41,7 @@ export class NodeKernel {
 					this.outputBuffer += data.toString();
 				});
 			}
+
 			if (this.nodeRuntime.stderr) {
 				this.nodeRuntime.stderr.on("data", (data) => {
 					console.log(`stderr: ${data}`);
@@ -60,18 +65,22 @@ export class NodeKernel {
 
 	public async restart() {
 		this.stop();
+
 		await this.start();
 	}
 
 	public stop() {
 		if (this.nodeRuntime) {
 			this.nodeRuntime.kill();
+
 			this.nodeRuntime = undefined;
 		}
 
 		if (this.tmpDirectory) {
 			const t = this.tmpDirectory;
+
 			this.tmpDirectory = undefined;
+
 			rmdir(t, { glob: false }, (err: Error | undefined) => {
 				if (err) {
 					console.log(err);
@@ -91,6 +100,7 @@ export class NodeKernel {
 			await new Promise((res) => setTimeout(res, 500)); // wait a bit to collect all output that is associated with this eval
 			return Promise.resolve(this.outputBuffer);
 		}
+
 		throw new Error("Evaluation failed");
 	}
 
@@ -117,6 +127,7 @@ export class NodeKernel {
 
 						if (cell) {
 							source.path = cell.uri.toString();
+
 							source.name = PATH.basename(cell.uri.fsPath);
 							// append cell index to name
 							const cellIndex = this.document.cells.indexOf(cell);
@@ -150,10 +161,13 @@ export class NodeKernel {
 							PATH.join(os.tmpdir(), "vscode-nodebook-"),
 						);
 					}
+
 					const cellPath = `${this.tmpDirectory}/nodebook_cell_${cellUri.fragment}.js`;
+
 					this.pathToCell.set(cellPath, cell);
 
 					let data = cell.document.getText();
+
 					data += `\n//@ sourceURL=${cellPath}`; // trick to make node.js report the eval's source under this path
 					fs.writeFileSync(cellPath, data);
 
@@ -161,6 +175,7 @@ export class NodeKernel {
 				}
 			}
 		} catch (e) {}
+
 		return undefined;
 	}
 }
@@ -204,6 +219,7 @@ function visitSources(
 				default:
 					break;
 			}
+
 			break;
 
 		case "request":
@@ -252,6 +268,7 @@ function visitSources(
 				default:
 					break;
 			}
+
 			break;
 
 		case "response":
@@ -306,6 +323,7 @@ function visitSources(
 						break;
 				}
 			}
+
 			break;
 	}
 }

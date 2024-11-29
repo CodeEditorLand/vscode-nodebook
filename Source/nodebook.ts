@@ -9,8 +9,11 @@ import { NodeKernel } from "./nodeKernel";
 
 export class Nodebook implements vscode.Disposable {
 	private nodeKernel: NodeKernel;
+
 	private debugging = false;
+
 	private disposables: vscode.Disposable[] = [];
+
 	private activeDebugSession: vscode.DebugSession | undefined;
 
 	constructor(doc: vscode.NotebookDocument) {
@@ -19,12 +22,15 @@ export class Nodebook implements vscode.Disposable {
 
 	async dispose() {
 		await this.stopDebugger();
+
 		this.nodeKernel.stop();
 	}
 
 	public async restartKernel() {
 		await this.stopDebugger();
+
 		await vscode.commands.executeCommand("notebook.clearAllCellsOutputs");
+
 		await this.nodeKernel.restart();
 
 		if (this.debugging) {
@@ -52,6 +58,7 @@ export class Nodebook implements vscode.Disposable {
 		if (this.debugging) {
 			await this.startDebugger();
 		}
+
 		return this.nodeKernel.eval(cell);
 	}
 
@@ -61,6 +68,7 @@ export class Nodebook implements vscode.Disposable {
 
 			return;
 		}
+
 		this.activeDebugSession = session;
 	}
 
@@ -70,6 +78,7 @@ export class Nodebook implements vscode.Disposable {
 
 			return;
 		}
+
 		this.activeDebugSession = undefined;
 	}
 
@@ -93,7 +102,9 @@ export class Nodebook implements vscode.Disposable {
 	private async stopDebugger() {
 		if (this.activeDebugSession) {
 			await vscode.commands.executeCommand("workbench.action.debug.stop");
+
 			this.disposables.forEach((d) => d.dispose());
+
 			this.disposables = [];
 		}
 	}
